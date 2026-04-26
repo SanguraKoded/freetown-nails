@@ -1,0 +1,1340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Freetown Nails & Beauty | Sierra Leone's Premier Nail Studio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Tahoma&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    :root {
+      --blush:    #f7d6e0;
+      --rose:     #e8a0b4;
+      --deep:     #b5547a;
+      --plum:     #7c3155;
+      --cream:    #fdf6f0;
+      --gold:     #d4a96a;
+      --dark:     #2e1a27;
+      --text:     #3d2035;
+      --light-text:#7a5a70;
+      --white:    #ffffff;
+      --shadow:   0 8px 32px rgba(124,49,85,.12);
+      --radius:   18px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Tahoma', Geneva, sans-serif;
+      background: var(--cream);
+      color: var(--text);
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* ══════ UTILITY ══════ */
+    .container { max-width: 1140px; margin: 0 auto; padding: 0 24px; }
+    .section-label {
+      display: inline-block;
+      font-size: .75rem;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--deep);
+      background: var(--blush);
+      padding: 4px 14px;
+      border-radius: 20px;
+      margin-bottom: 12px;
+    }
+    .section-title {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      color: var(--plum);
+      line-height: 1.2;
+      margin-bottom: 16px;
+    }
+    .section-sub { color: var(--light-text); max-width: 520px; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 14px 32px;
+      border-radius: 50px;
+      font-family: 'Tahoma', sans-serif;
+      font-size: .95rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all .3s ease;
+      border: none;
+      text-decoration: none;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--deep), var(--plum));
+      color: var(--white);
+      box-shadow: 0 6px 24px rgba(181,84,122,.35);
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 32px rgba(181,84,122,.45);
+    }
+    .btn-outline {
+      background: transparent;
+      color: var(--deep);
+      border: 2px solid var(--rose);
+    }
+    .btn-outline:hover {
+      background: var(--blush);
+      border-color: var(--deep);
+    }
+
+    /* ══════ DECORATIVE BLOBS ══════ */
+    .blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(60px);
+      opacity: .18;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ══════ NAVBAR ══════ */
+    #navbar {
+      position: fixed; top: 0; width: 100%; z-index: 1000;
+      background: rgba(253,246,240,.92);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(232,160,180,.25);
+      transition: box-shadow .3s;
+    }
+    #navbar.scrolled { box-shadow: var(--shadow); }
+    .nav-inner {
+      display: flex; align-items: center; justify-content: space-between;
+      height: 72px;
+    }
+    .nav-logo {
+      display: flex; align-items: center; gap: 10px;
+      font-family: 'Playfair Display', serif;
+      font-size: 1.45rem;
+      color: var(--plum);
+      text-decoration: none;
+    }
+    .nav-logo .logo-icon {
+      width: 42px; height: 42px;
+      background: linear-gradient(135deg, var(--rose), var(--deep));
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      color: white; font-size: 1.1rem;
+    }
+    .nav-links {
+      display: flex; align-items: center; gap: 36px;
+      list-style: none;
+    }
+    .nav-links a {
+      text-decoration: none;
+      color: var(--text);
+      font-size: .9rem;
+      font-weight: 700;
+      letter-spacing: .04em;
+      position: relative;
+      transition: color .2s;
+    }
+    .nav-links a::after {
+      content: '';
+      position: absolute; bottom: -4px; left: 0;
+      width: 0; height: 2px;
+      background: var(--deep);
+      border-radius: 2px;
+      transition: width .3s ease;
+    }
+    .nav-links a:hover { color: var(--deep); }
+    .nav-links a:hover::after { width: 100%; }
+    .nav-links .btn { padding: 10px 24px; font-size: .88rem; }
+    .hamburger {
+      display: none; flex-direction: column; gap: 5px;
+      cursor: pointer; padding: 4px; background: none; border: none;
+    }
+    .hamburger span {
+      display: block; width: 26px; height: 2px;
+      background: var(--plum); border-radius: 2px;
+      transition: all .35s ease;
+    }
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    /* Mobile menu */
+    #mobile-menu {
+      display: none;
+      position: fixed; top: 72px; left: 0; right: 0;
+      background: var(--cream);
+      border-bottom: 1px solid var(--blush);
+      z-index: 999;
+      padding: 20px 24px 28px;
+      box-shadow: 0 12px 32px rgba(124,49,85,.12);
+    }
+    #mobile-menu.open { display: block; }
+    #mobile-menu ul { list-style: none; }
+    #mobile-menu ul li { border-bottom: 1px solid var(--blush); }
+    #mobile-menu ul a {
+      display: block; padding: 14px 0;
+      text-decoration: none;
+      color: var(--text);
+      font-weight: 700;
+      font-size: 1rem;
+    }
+    #mobile-menu .btn { margin-top: 16px; width: 100%; justify-content: center; }
+
+    /* ══════ HERO ══════ */
+    #home {
+      min-height: 100vh;
+      display: flex; align-items: center;
+      position: relative;
+      overflow: hidden;
+      padding-top: 72px;
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, #fdf0f6 0%, #f7d6e0 40%, #efe0f7 100%);
+      z-index: 0;
+    }
+    .blob-1 { width: 600px; height: 600px; background: var(--rose); top: -100px; right: -150px; }
+    .blob-2 { width: 400px; height: 400px; background: var(--plum); bottom: -80px; left: -100px; }
+    .blob-3 { width: 300px; height: 300px; background: var(--gold); top: 40%; right: 30%; }
+
+    .hero-inner {
+      position: relative; z-index: 1;
+      display: grid; grid-template-columns: 1fr 1fr;
+      align-items: center; gap: 60px;
+      padding: 60px 0;
+    }
+    .hero-tag {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(255,255,255,.7);
+      border: 1px solid var(--rose);
+      border-radius: 50px;
+      padding: 6px 16px 6px 8px;
+      font-size: .82rem; font-weight: 700;
+      color: var(--plum); margin-bottom: 20px;
+    }
+    .hero-tag .dot {
+      width: 8px; height: 8px;
+      background: var(--deep); border-radius: 50%;
+      animation: pulse 1.8s infinite;
+    }
+    @keyframes pulse {
+      0%,100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.4); opacity: .6; }
+    }
+    .hero-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.4rem, 5vw, 4rem);
+      color: var(--plum);
+      line-height: 1.15;
+      margin-bottom: 20px;
+    }
+    .hero-title em {
+      font-style: italic;
+      background: linear-gradient(135deg, var(--deep), var(--gold));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero-sub { color: var(--light-text); font-size: 1.05rem; margin-bottom: 32px; max-width: 440px; }
+    .hero-buttons { display: flex; gap: 16px; flex-wrap: wrap; }
+    .hero-stats {
+      display: flex; gap: 32px; margin-top: 48px;
+      padding-top: 32px; border-top: 1px solid rgba(232,160,180,.4);
+    }
+    .stat-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem; color: var(--plum); font-weight: 700;
+    }
+    .stat-label { font-size: .8rem; color: var(--light-text); font-weight: 700; letter-spacing: .06em; }
+
+    /* Hero image grid */
+    .hero-visual {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 240px 180px;
+      gap: 14px;
+    }
+    .hero-img {
+      border-radius: var(--radius);
+      overflow: hidden;
+      position: relative;
+    }
+    .hero-img:first-child { grid-row: 1 / 3; border-radius: 80px 24px 24px 24px; }
+    .hero-img img {
+      width: 100%; height: 100%; object-fit: cover;
+      transition: transform .5s ease;
+    }
+    .hero-img:hover img { transform: scale(1.06); }
+    .hero-img .badge {
+      position: absolute; bottom: 12px; left: 12px;
+      background: rgba(255,255,255,.88);
+      backdrop-filter: blur(8px);
+      border-radius: 10px; padding: 8px 12px;
+      font-size: .78rem; font-weight: 700; color: var(--plum);
+    }
+    .hero-img .badge i { color: var(--gold); margin-right: 4px; }
+
+    /* ══════ SERVICES ══════ */
+    #services {
+      padding: 100px 0;
+      background: var(--white);
+      position: relative;
+    }
+    .services-header { text-align: center; margin-bottom: 60px; }
+    .services-header .section-sub { margin: 0 auto; }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 28px;
+    }
+    .service-card {
+      background: var(--cream);
+      border-radius: var(--radius);
+      padding: 32px 28px;
+      border: 1px solid rgba(232,160,180,.3);
+      transition: all .35s ease;
+      position: relative; overflow: hidden;
+    }
+    .service-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 4px;
+      background: linear-gradient(90deg, var(--rose), var(--deep));
+      transform: scaleX(0); transform-origin: left;
+      transition: transform .35s ease;
+    }
+    .service-card:hover {
+      transform: translateY(-6px);
+      box-shadow: var(--shadow);
+      border-color: var(--rose);
+    }
+    .service-card:hover::before { transform: scaleX(1); }
+    .service-icon {
+      width: 56px; height: 56px;
+      background: var(--blush);
+      border-radius: 16px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.4rem; color: var(--deep);
+      margin-bottom: 20px;
+    }
+    .service-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.25rem; color: var(--plum);
+      margin-bottom: 8px;
+    }
+    .service-desc { font-size: .9rem; color: var(--light-text); margin-bottom: 16px; }
+    .service-price {
+      display: flex; align-items: baseline; gap: 6px;
+    }
+    .price-from { font-size: .78rem; color: var(--light-text); }
+    .price-val {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem; color: var(--deep); font-weight: 700;
+    }
+    .price-curr { font-size: .8rem; color: var(--light-text); }
+
+    /* ══════ GALLERY ══════ */
+    #gallery {
+      padding: 100px 0;
+      background: linear-gradient(180deg, var(--cream), #f5e8f4);
+    }
+    .gallery-header { text-align: center; margin-bottom: 50px; }
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      grid-template-rows: auto;
+      gap: 16px;
+    }
+    .g-item {
+      border-radius: var(--radius);
+      overflow: hidden;
+      position: relative;
+      cursor: pointer;
+    }
+    .g-item img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s; }
+    .g-item:hover img { transform: scale(1.08); }
+    .g-item:nth-child(1) { grid-column: 1 / 6; height: 320px; }
+    .g-item:nth-child(2) { grid-column: 6 / 10; height: 320px; }
+    .g-item:nth-child(3) { grid-column: 10 / 13; height: 320px; }
+    .g-item:nth-child(4) { grid-column: 1 / 5; height: 260px; }
+    .g-item:nth-child(5) { grid-column: 5 / 9; height: 260px; }
+    .g-item:nth-child(6) { grid-column: 9 / 13; height: 260px; }
+    .g-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(124,49,85,.7), transparent);
+      opacity: 0; transition: opacity .35s;
+      display: flex; align-items: flex-end; padding: 20px;
+    }
+    .g-item:hover .g-overlay { opacity: 1; }
+    .g-overlay span { color: white; font-weight: 700; font-size: .9rem; }
+
+    /* ══════ PRICE CALCULATOR ══════ */
+    #calculator {
+      padding: 80px 0;
+      background: linear-gradient(135deg, var(--plum), var(--dark));
+      position: relative; overflow: hidden;
+    }
+    #calculator .blob { background: var(--rose); opacity: .08; }
+    .calc-inner {
+      position: relative; z-index: 1;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center;
+    }
+    .calc-text .section-label { background: rgba(255,255,255,.15); color: var(--blush); }
+    .calc-text .section-title { color: var(--white); }
+    .calc-text .section-sub { color: rgba(255,255,255,.65); }
+    .calc-widget {
+      background: rgba(255,255,255,.07);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255,255,255,.15);
+      border-radius: 24px; padding: 36px;
+    }
+    .calc-widget h3 {
+      font-family: 'Playfair Display', serif;
+      color: var(--white); font-size: 1.3rem; margin-bottom: 24px;
+    }
+    .calc-row { margin-bottom: 18px; }
+    .calc-row label {
+      display: block; color: rgba(255,255,255,.8);
+      font-size: .85rem; font-weight: 700; margin-bottom: 8px;
+    }
+    .calc-row select, .calc-row input[type=checkbox] {
+      width: 100%;
+      background: rgba(255,255,255,.1);
+      border: 1px solid rgba(255,255,255,.2);
+      border-radius: 10px; padding: 12px 16px;
+      color: var(--white); font-family: 'Tahoma', sans-serif;
+      font-size: .9rem; cursor: pointer;
+      appearance: none;
+    }
+    .calc-row select option { background: var(--plum); }
+    .add-ons { display: flex; flex-direction: column; gap: 10px; }
+    .addon-item {
+      display: flex; align-items: center; gap: 10px;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 10px; padding: 10px 14px;
+      cursor: pointer; transition: background .2s;
+    }
+    .addon-item:hover { background: rgba(255,255,255,.12); }
+    .addon-item input[type=checkbox] {
+      width: 18px; height: 18px; flex-shrink: 0;
+      accent-color: var(--rose);
+    }
+    .addon-item label { color: rgba(255,255,255,.85); font-size: .88rem; cursor: pointer; flex: 1; }
+    .addon-price { color: var(--rose); font-weight: 700; font-size: .88rem; }
+    .calc-result {
+      margin-top: 24px; padding: 20px;
+      background: linear-gradient(135deg, var(--deep), var(--rose));
+      border-radius: 14px; text-align: center;
+    }
+    .calc-result .est-label { color: rgba(255,255,255,.8); font-size: .8rem; letter-spacing: .1em; text-transform: uppercase; }
+    .calc-result .est-price {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.4rem; color: white; font-weight: 700;
+    }
+    .calc-result .est-note { color: rgba(255,255,255,.7); font-size: .78rem; margin-top: 4px; }
+
+    /* ══════ BOOKING FORM ══════ */
+    #book {
+      padding: 100px 0;
+      background: var(--white);
+    }
+    .booking-inner {
+      display: grid; grid-template-columns: 1fr 1.4fr; gap: 60px; align-items: start;
+    }
+    .booking-info h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem; color: var(--plum); margin: 28px 0 16px;
+    }
+    .info-item {
+      display: flex; gap: 14px; margin-bottom: 16px; align-items: flex-start;
+    }
+    .info-icon {
+      width: 40px; height: 40px; flex-shrink: 0;
+      background: var(--blush); border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--deep); font-size: .95rem;
+    }
+    .info-text strong { display: block; color: var(--plum); font-size: .9rem; }
+    .info-text span { color: var(--light-text); font-size: .88rem; }
+    .hours-grid { display: grid; gap: 8px; }
+    .hours-row {
+      display: flex; justify-content: space-between;
+      font-size: .88rem; padding: 8px 0;
+      border-bottom: 1px solid var(--blush);
+    }
+    .hours-row:last-child { border: none; }
+    .hours-day { color: var(--text); font-weight: 700; }
+    .hours-time { color: var(--light-text); }
+
+    /* Form */
+    .booking-form-wrap {
+      background: var(--cream);
+      border-radius: 24px; padding: 40px;
+      border: 1px solid rgba(232,160,180,.3);
+      box-shadow: var(--shadow);
+    }
+    .booking-form-wrap h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6rem; color: var(--plum); margin-bottom: 28px;
+    }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+    .form-group { margin-bottom: 0; }
+    .form-group.full { grid-column: 1 / -1; }
+    .form-group label {
+      display: block; font-size: .83rem; font-weight: 700;
+      color: var(--plum); margin-bottom: 7px;
+    }
+    .form-group label .req { color: var(--deep); margin-left: 2px; }
+    .form-control {
+      width: 100%;
+      background: var(--white);
+      border: 1.5px solid rgba(232,160,180,.5);
+      border-radius: 12px; padding: 13px 16px;
+      font-family: 'Tahoma', sans-serif;
+      font-size: .9rem; color: var(--text);
+      transition: border-color .25s, box-shadow .25s;
+      outline: none;
+    }
+    .form-control:focus {
+      border-color: var(--deep);
+      box-shadow: 0 0 0 3px rgba(181,84,122,.12);
+    }
+    .form-control.error { border-color: #e05b5b; }
+    .error-msg { font-size: .78rem; color: #c0392b; margin-top: 4px; display: none; }
+    .error-msg.show { display: block; }
+    select.form-control { appearance: none; cursor: pointer; }
+    textarea.form-control { resize: vertical; min-height: 100px; }
+    .form-submit { margin-top: 24px; }
+    .form-submit .btn { width: 100%; justify-content: center; font-size: 1rem; padding: 16px; }
+    .form-note { font-size: .78rem; color: var(--light-text); text-align: center; margin-top: 12px; }
+
+    /* Success banner */
+    #success-banner {
+      display: none;
+      background: linear-gradient(135deg, #d4edda, #c3e6cb);
+      border: 1px solid #a8d5b5; border-radius: 14px;
+      padding: 20px 24px; margin-bottom: 24px;
+      align-items: center; gap: 14px;
+    }
+    #success-banner.show { display: flex; }
+    #success-banner i { font-size: 1.5rem; color: #2e7d47; }
+    #success-banner p { color: #2e7d47; font-weight: 700; }
+    #success-banner small { display: block; color: #4a9b5f; font-weight: 400; }
+
+    /* ══════ TESTIMONIALS ══════ */
+    #testimonials {
+      padding: 100px 0;
+      background: var(--cream);
+    }
+    .test-header { text-align: center; margin-bottom: 50px; }
+    .test-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 24px; }
+    .test-card {
+      background: var(--white);
+      border-radius: var(--radius); padding: 28px;
+      border: 1px solid rgba(232,160,180,.25);
+      position: relative;
+    }
+    .test-card::before {
+      content: '\201C';
+      font-family: 'Playfair Display', serif;
+      font-size: 5rem; color: var(--blush);
+      position: absolute; top: -10px; left: 20px; line-height: 1;
+    }
+    .test-stars { color: var(--gold); font-size: .9rem; margin-bottom: 14px; }
+    .test-text { color: var(--light-text); font-size: .92rem; line-height: 1.7; margin-bottom: 20px; }
+    .test-author { display: flex; align-items: center; gap: 12px; }
+    .test-avatar {
+      width: 44px; height: 44px; border-radius: 50%;
+      background: var(--blush);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem; color: var(--deep);
+    }
+    .test-name { font-weight: 700; color: var(--plum); font-size: .9rem; }
+    .test-loc { font-size: .78rem; color: var(--light-text); }
+
+    /* ══════ CONTACT ══════ */
+    #contact {
+      padding: 100px 0;
+      background: var(--white);
+    }
+    .contact-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; }
+    .contact-map {
+      border-radius: var(--radius); overflow: hidden;
+      height: 360px; background: var(--blush);
+      display: flex; align-items: center; justify-content: center;
+      flex-direction: column; gap: 16px;
+      border: 1px solid rgba(232,160,180,.3);
+      font-size: .95rem; color: var(--light-text);
+    }
+    .contact-map i { font-size: 2.5rem; color: var(--deep); }
+    .contact-map strong { color: var(--plum); font-size: 1rem; }
+    .social-links { display: flex; gap: 12px; margin-top: 24px; }
+    .soc-btn {
+      width: 44px; height: 44px;
+      background: var(--blush); border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--deep); font-size: 1rem;
+      text-decoration: none; transition: all .25s;
+    }
+    .soc-btn:hover { background: var(--deep); color: white; transform: translateY(-2px); }
+
+    /* ══════ FOOTER ══════ */
+    footer {
+      background: var(--dark);
+      color: rgba(255,255,255,.6);
+      padding: 60px 0 28px;
+    }
+    .footer-inner {
+      display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px;
+      margin-bottom: 48px;
+    }
+    .footer-brand .nav-logo { color: var(--blush); margin-bottom: 14px; }
+    .footer-brand p { font-size: .88rem; line-height: 1.7; max-width: 280px; }
+    .footer-col h4 {
+      font-family: 'Playfair Display', serif;
+      color: var(--white); font-size: 1rem; margin-bottom: 16px;
+    }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .footer-col ul a {
+      text-decoration: none; color: rgba(255,255,255,.55);
+      font-size: .88rem; transition: color .2s;
+    }
+    .footer-col ul a:hover { color: var(--rose); }
+    .footer-bottom {
+      padding-top: 24px;
+      border-top: 1px solid rgba(255,255,255,.08);
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: .82rem; flex-wrap: wrap; gap: 12px;
+    }
+    .footer-bottom a { color: var(--rose); text-decoration: none; }
+
+    /* ══════ SCROLL TO TOP ══════ */
+    #scroll-top {
+      position: fixed; bottom: 28px; right: 28px; z-index: 999;
+      width: 48px; height: 48px;
+      background: linear-gradient(135deg, var(--deep), var(--plum));
+      color: white; border: none; border-radius: 14px;
+      cursor: pointer; font-size: 1rem;
+      box-shadow: 0 6px 20px rgba(124,49,85,.35);
+      opacity: 0; transform: translateY(20px);
+      transition: all .3s ease;
+    }
+    #scroll-top.visible { opacity: 1; transform: translateY(0); }
+    #scroll-top:hover { transform: translateY(-3px); }
+
+    /* ══════ RESPONSIVE ══════ */
+    @media (max-width: 1024px) {
+      .hero-inner { gap: 40px; }
+      .footer-inner { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+      .hero-inner { grid-template-columns: 1fr; gap: 40px; }
+      .hero-visual { display: none; }
+      .hero-stats { gap: 20px; }
+      .calc-inner { grid-template-columns: 1fr; }
+      .booking-inner { grid-template-columns: 1fr; }
+      .form-grid { grid-template-columns: 1fr; }
+      .form-group.full { grid-column: 1; }
+      .contact-inner { grid-template-columns: 1fr; }
+      .footer-inner { grid-template-columns: 1fr 1fr; }
+      .g-item:nth-child(1) { grid-column: 1 / 7; height: 200px; }
+      .g-item:nth-child(2) { grid-column: 7 / 13; height: 200px; }
+      .g-item:nth-child(3) { grid-column: 1 / 5; height: 180px; }
+      .g-item:nth-child(4) { grid-column: 5 / 9; height: 180px; }
+      .g-item:nth-child(5) { grid-column: 9 / 13; height: 180px; }
+      .g-item:nth-child(6) { display: none; }
+    }
+    @media (max-width: 480px) {
+      .footer-inner { grid-template-columns: 1fr; }
+      .footer-bottom { flex-direction: column; text-align: center; }
+      .hero-buttons { flex-direction: column; }
+      .hero-buttons .btn { justify-content: center; }
+      .gallery-grid { grid-template-columns: 1fr 1fr; }
+      .g-item { grid-column: auto !important; height: 160px !important; }
+      .g-item:nth-child(6) { display: block; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════ NAVBAR ══════════════════ -->
+<nav id="navbar">
+  <div class="container">
+    <div class="nav-inner">
+      <a href="#home" class="nav-logo">
+        <div class="logo-icon"><i class="fa-solid fa-hand-sparkles"></i></div>
+        Freetown Nails
+      </a>
+      <ul class="nav-links">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#gallery">Gallery</a></li>
+        <li><a href="#contact">Contact</a></li>
+        <li><a href="#book" class="btn btn-primary"><i class="fa-solid fa-calendar-check"></i> Book Now</a></li>
+      </ul>
+      <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- Mobile Menu -->
+<div id="mobile-menu">
+  <ul>
+    <li><a href="#home" class="mob-link">Home</a></li>
+    <li><a href="#services" class="mob-link">Services</a></li>
+    <li><a href="#gallery" class="mob-link">Gallery</a></li>
+    <li><a href="#contact" class="mob-link">Contact</a></li>
+  </ul>
+  <a href="#book" class="btn btn-primary mob-link"><i class="fa-solid fa-calendar-check"></i> Book Now</a>
+</div>
+
+<!-- ══════════════════ HERO ══════════════════ -->
+<section id="home">
+  <div class="hero-bg">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+  </div>
+  <div class="container">
+    <div class="hero-inner">
+      <div class="hero-content">
+        <div class="hero-tag">
+          <span class="dot"></span>
+          Now Open in Freetown, Sierra Leone
+        </div>
+        <h1 class="hero-title">
+          Your Nails,<br/>
+          <em>Perfectly</em><br/>
+          Crafted
+        </h1>
+        <p class="hero-sub">
+          Freetown's premier nail & beauty studio. Book online in seconds — no calling, no queuing. Luxury nail care at prices that make sense in Sierra Leone.
+        </p>
+        <div class="hero-buttons">
+          <a href="#book" class="btn btn-primary"><i class="fa-solid fa-calendar-check"></i> Book Appointment</a>
+          <a href="#services" class="btn btn-outline"><i class="fa-solid fa-spa"></i> View Services</a>
+        </div>
+        <div class="hero-stats">
+          <div>
+            <div class="stat-num">500+</div>
+            <div class="stat-label">Happy Clients</div>
+          </div>
+          <div>
+            <div class="stat-num">12+</div>
+            <div class="stat-label">Nail Artists</div>
+          </div>
+          <div>
+            <div class="stat-num">4.9★</div>
+            <div class="stat-label">Rating</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Hero image collage -->
+      <div class="hero-visual">
+        <div class="hero-img">
+          <img src="https://images.unsplash.com/photo-1604654894610-df63bc536371?w=600&q=80" alt="Nail art close-up" />
+          <div class="badge"><i class="fa-solid fa-star"></i> Top Rated Studio</div>
+        </div>
+        <div class="hero-img">
+          <img src="https://images.unsplash.com/photo-1610992015732-2449b76344bc?w=400&q=80" alt="Pink nail design" />
+          <div class="badge"><i class="fa-solid fa-gem"></i> Gel & Acrylic</div>
+        </div>
+        <div class="hero-img">
+          <img src="https://images.unsplash.com/photo-1632345031435-8727f592d8db?w=400&q=80" alt="Nail salon interior" />
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ SERVICES ══════════════════ -->
+<section id="services">
+  <div class="container">
+    <div class="services-header">
+      <span class="section-label">What We Offer</span>
+      <h2 class="section-title">Our Services</h2>
+      <p class="section-sub">From classic manicures to bold nail art — every service delivered with care and premium products.</p>
+    </div>
+    <div class="services-grid">
+      <div class="service-card">
+        <div class="service-icon"><i class="fa-solid fa-hand"></i></div>
+        <div class="service-name">Classic Manicure</div>
+        <p class="service-desc">Shaping, cuticle care, massage & your choice of polish. Perfect for everyday elegance.</p>
+        <div class="service-price">
+          <span class="price-from">From</span>
+          <span class="price-val">NLe 45</span>
+          <span class="price-curr">SLL</span>
+        </div>
+      </div>
+      <div class="service-card">
+        <div class="service-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+        <div class="service-name">Gel Extensions</div>
+        <p class="service-desc">Long-lasting gel extensions with a flawless finish. Lasts 3–4 weeks without chipping.</p>
+        <div class="service-price">
+          <span class="price-from">From</span>
+          <span class="price-val">NLe 120</span>
+          <span class="price-curr">SLL</span>
+        </div>
+      </div>
+      <div class="service-card">
+        <div class="service-icon"><i class="fa-solid fa-paintbrush"></i></div>
+        <div class="service-name">Nail Art Design</div>
+        <p class="service-desc">Custom designs, florals, ombre, chrome powder & 3D gems. You dream it, we paint it.</p>
+        <div class="service-price">
+          <span class="price-from">From</span>
+          <span class="price-val">NLe 80</span>
+          <span class="price-curr">SLL</span>
+        </div>
+      </div>
+      <div class="service-card">
+        <div class="service-icon"><i class="fa-solid fa-droplet"></i></div>
+        <div class="service-name">Acrylic Set</div>
+        <p class="service-desc">Full acrylic set for durable, sculpted nails. Infill & removal services also available.</p>
+        <div class="service-price">
+          <span class="price-from">From</span>
+          <span class="price-val">NLe 150</span>
+          <span class="price-curr">SLL</span>
+        </div>
+      </div>
+      <div class="service-card">
+        <div class="service-icon"><i class="fa-solid fa-foot"></i></div>
+        <div class="service-name">Luxury Pedicure</div>
+        <p class="service-desc">Foot soak, exfoliation, massage, and colour. A full pampering experience for tired feet.</p>
+        <div class="service-price">
+          <span class="price-from">From</span>
+          <span class="price-val">NLe 65</span>
+          <span class="price-curr">SLL</span>
+        </div>
+      </div>
+      <div class="service-card">
+        <div class="service-icon"><i class="fa-solid fa-gem"></i></div>
+        <div class="service-name">Bridal Package</div>
+        <p class="service-desc">Mani + pedi + nail art for your big day. Includes a complimentary hand massage & glass of champagne.</p>
+        <div class="service-price">
+          <span class="price-from">From</span>
+          <span class="price-val">NLe 300</span>
+          <span class="price-curr">SLL</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ GALLERY ══════════════════ -->
+<section id="gallery">
+  <div class="container">
+    <div class="gallery-header">
+      <span class="section-label">Our Work</span>
+      <h2 class="section-title">Nail Art Gallery</h2>
+      <p class="section-sub" style="margin:0 auto;">Browse some of our favourite creations — every set is a masterpiece.</p>
+    </div>
+    <div class="gallery-grid">
+      <div class="g-item">
+        <img src="https://images.unsplash.com/photo-1604654894610-df63bc536371?w=800&q=80" alt="Floral nail art" />
+        <div class="g-overlay"><span>Floral Elegance</span></div>
+      </div>
+      <div class="g-item">
+        <img src="https://images.unsplash.com/photo-1610992015732-2449b76344bc?w=500&q=80" alt="Pink ombre nails" />
+        <div class="g-overlay"><span>Pink Ombre</span></div>
+      </div>
+      <div class="g-item">
+        <img src="https://images.unsplash.com/photo-1633177317976-3f9bc45e1d1d?w=400&q=80" alt="Chrome nails" />
+        <div class="g-overlay"><span>Chrome Mirror</span></div>
+      </div>
+      <div class="g-item">
+        <img src="https://images.unsplash.com/photo-1632345031435-8727f592d8db?w=500&q=80" alt="Gel extensions" />
+        <div class="g-overlay"><span>Gel Extensions</span></div>
+      </div>
+      <div class="g-item">
+        <img src="https://images.unsplash.com/photo-1604654894610-df63bc536371?w=500&q=80&crop=entropy&cs=tinysrgb" alt="Nail gems" />
+        <div class="g-overlay"><span>Gem Accents</span></div>
+      </div>
+      <div class="g-item">
+        <img src="https://images.unsplash.com/photo-1610992015732-2449b76344bc?w=500&q=80&sat=-50" alt="French manicure" />
+        <div class="g-overlay"><span>Modern French</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ PRICE CALCULATOR ══════════════════ -->
+<section id="calculator">
+  <div class="blob" style="width:500px;height:500px;top:-100px;right:-100px;"></div>
+  <div class="container">
+    <div class="calc-inner">
+      <div class="calc-text">
+        <span class="section-label">Instant Estimate</span>
+        <h2 class="section-title">Price Calculator</h2>
+        <p class="section-sub">
+          Get an instant price estimate for your chosen services. No surprises — just transparent, affordable beauty pricing.
+        </p>
+        <div class="info-item" style="margin-top:32px;">
+          <div class="info-icon" style="background:rgba(255,255,255,.1);color:var(--blush);">
+            <i class="fa-solid fa-circle-check"></i>
+          </div>
+          <div class="info-text">
+            <strong style="color:var(--white);">Final price confirmed at booking</strong>
+            <span style="color:rgba(255,255,255,.6);">Estimate may vary based on nail length & complexity.</span>
+          </div>
+        </div>
+      </div>
+      <div class="calc-widget">
+        <h3><i class="fa-solid fa-calculator" style="color:var(--rose);margin-right:8px;"></i>Build Your Service</h3>
+        <div class="calc-row">
+          <label>Base Service</label>
+          <select id="base-service">
+            <option value="0">— Select a service —</option>
+            <option value="45">Classic Manicure — NLe 45</option>
+            <option value="65">Luxury Pedicure — NLe 65</option>
+            <option value="80">Nail Art Design — NLe 80</option>
+            <option value="120">Gel Extensions — NLe 120</option>
+            <option value="150">Acrylic Set — NLe 150</option>
+            <option value="300">Bridal Package — NLe 300</option>
+          </select>
+        </div>
+        <div class="calc-row">
+          <label>Add-ons</label>
+          <div class="add-ons">
+            <label class="addon-item">
+              <input type="checkbox" class="addon" value="20" /> <span>Nail Art (+2 accent nails)</span> <span class="addon-price">+NLe 20</span>
+            </label>
+            <label class="addon-item">
+              <input type="checkbox" class="addon" value="15" /> <span>Gel Top Coat</span> <span class="addon-price">+NLe 15</span>
+            </label>
+            <label class="addon-item">
+              <input type="checkbox" class="addon" value="25" /> <span>Paraffin Hand Wax</span> <span class="addon-price">+NLe 25</span>
+            </label>
+            <label class="addon-item">
+              <input type="checkbox" class="addon" value="30" /> <span>Gem & Rhinestone Set</span> <span class="addon-price">+NLe 30</span>
+            </label>
+            <label class="addon-item">
+              <input type="checkbox" class="addon" value="10" /> <span>Express Dry Spray</span> <span class="addon-price">+NLe 10</span>
+            </label>
+          </div>
+        </div>
+        <div class="calc-result">
+          <div class="est-label">Estimated Total</div>
+          <div class="est-price" id="calc-total">NLe 0</div>
+          <div class="est-note">Prices in New Leone (NLe) · Taxes inclusive</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ BOOKING FORM ══════════════════ -->
+<section id="book">
+  <div class="container">
+    <div class="booking-inner">
+      <div class="booking-info">
+        <span class="section-label">Online Booking</span>
+        <h2 class="section-title">Book Your<br/>Appointment</h2>
+        <p class="section-sub">Fill in the form and we'll confirm your slot via WhatsApp or call within 2 hours.</p>
+
+        <h3>Find Us</h3>
+        <div class="info-item">
+          <div class="info-icon"><i class="fa-solid fa-location-dot"></i></div>
+          <div class="info-text">
+            <strong>Address</strong>
+            <span>12 Wilkinson Road, Aberdeen<br/>Freetown, Sierra Leone</span>
+          </div>
+        </div>
+        <div class="info-item">
+          <div class="info-icon"><i class="fa-solid fa-phone"></i></div>
+          <div class="info-text">
+            <strong>Phone / WhatsApp</strong>
+            <span>+232 78 123 456</span>
+          </div>
+        </div>
+        <div class="info-item">
+          <div class="info-icon"><i class="fa-solid fa-envelope"></i></div>
+          <div class="info-text">
+            <strong>Email</strong>
+            <span>hello@freetownnails.sl</span>
+          </div>
+        </div>
+
+        <h3>Opening Hours</h3>
+        <div class="hours-grid">
+          <div class="hours-row"><span class="hours-day">Mon – Fri</span><span class="hours-time">9:00 AM – 7:00 PM</span></div>
+          <div class="hours-row"><span class="hours-day">Saturday</span><span class="hours-time">8:00 AM – 8:00 PM</span></div>
+          <div class="hours-row"><span class="hours-day">Sunday</span><span class="hours-time">10:00 AM – 5:00 PM</span></div>
+        </div>
+        <div class="social-links">
+          <a href="#" class="soc-btn" title="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+          <a href="#" class="soc-btn" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
+          <a href="#" class="soc-btn" title="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+          <a href="#" class="soc-btn" title="TikTok"><i class="fa-brands fa-tiktok"></i></a>
+        </div>
+      </div>
+
+      <!-- Booking Form -->
+      <div class="booking-form-wrap">
+        <h3><i class="fa-solid fa-calendar-heart" style="color:var(--rose);margin-right:8px;"></i>Request an Appointment</h3>
+        <div id="success-banner">
+          <i class="fa-solid fa-circle-check"></i>
+          <div>
+            <p>Booking Request Received!</p>
+            <small>We'll confirm via WhatsApp/call to +232 number within 2 hours. Thank you!</small>
+          </div>
+        </div>
+        <form id="booking-form" action="javascript:void(0)" novalidate>
+          <div class="form-grid">
+            <div class="form-group">
+              <label>Full Name <span class="req">*</span></label>
+              <input type="text" class="form-control" id="f-name" placeholder="e.g. Aminata Koroma" />
+              <div class="error-msg" id="err-name">Please enter your full name.</div>
+            </div>
+            <div class="form-group">
+              <label>Phone Number <span class="req">*</span></label>
+              <input type="tel" class="form-control" id="f-phone" placeholder="+232 76 000 000" />
+              <div class="error-msg" id="err-phone">Please enter a valid +232 number.</div>
+            </div>
+            <div class="form-group full">
+              <label>Email Address <span class="req">*</span></label>
+              <input type="email" class="form-control" id="f-email" placeholder="you@example.com" />
+              <div class="error-msg" id="err-email">Please enter a valid email address.</div>
+            </div>
+            <div class="form-group full">
+              <label>Service Requested <span class="req">*</span></label>
+              <select class="form-control" id="f-service">
+                <option value="">— Select a service —</option>
+                <option>Classic Manicure (NLe 45)</option>
+                <option>Luxury Pedicure (NLe 65)</option>
+                <option>Nail Art Design (NLe 80)</option>
+                <option>Gel Extensions (NLe 120)</option>
+                <option>Acrylic Set (NLe 150)</option>
+                <option>Bridal Package (NLe 300)</option>
+                <option>Other / Not Sure</option>
+              </select>
+              <div class="error-msg" id="err-service">Please select a service.</div>
+            </div>
+            <div class="form-group">
+              <label>Preferred Date <span class="req">*</span></label>
+              <input type="date" class="form-control" id="f-date" />
+              <div class="error-msg" id="err-date">Please select a date.</div>
+            </div>
+            <div class="form-group">
+              <label>Preferred Time <span class="req">*</span></label>
+              <select class="form-control" id="f-time">
+                <option value="">— Select time —</option>
+                <option>9:00 AM</option><option>10:00 AM</option>
+                <option>11:00 AM</option><option>12:00 PM</option>
+                <option>1:00 PM</option><option>2:00 PM</option>
+                <option>3:00 PM</option><option>4:00 PM</option>
+                <option>5:00 PM</option><option>6:00 PM</option>
+              </select>
+              <div class="error-msg" id="err-time">Please select a time.</div>
+            </div>
+            <div class="form-group full">
+              <label>Additional Notes</label>
+              <textarea class="form-control" id="f-notes" placeholder="Any special requests, nail inspo, allergies, etc."></textarea>
+            </div>
+          </div>
+          <div class="form-submit">
+            <button type="submit" class="btn btn-primary">
+              <i class="fa-solid fa-paper-plane"></i> Confirm Booking Request
+            </button>
+          </div>
+          <p class="form-note">
+            <i class="fa-brands fa-whatsapp" style="color:#25d366;"></i>
+            We'll confirm your appointment via WhatsApp or call within 2 hours.
+          </p>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ TESTIMONIALS ══════════════════ -->
+<section id="testimonials">
+  <div class="container">
+    <div class="test-header">
+      <span class="section-label">Client Love</span>
+      <h2 class="section-title">What Our Clients Say</h2>
+    </div>
+    <div class="test-grid">
+      <div class="test-card">
+        <div class="test-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+        <p class="test-text">"I've been to many nail salons in Freetown but Freetown Nails is on a completely different level. My gel extensions lasted 5 weeks and the nail art was stunning!"</p>
+        <div class="test-author">
+          <div class="test-avatar"><i class="fa-solid fa-user"></i></div>
+          <div>
+            <div class="test-name">Fanta Sesay</div>
+            <div class="test-loc"><i class="fa-solid fa-location-dot" style="font-size:.7rem;color:var(--rose);"></i> Wilberforce, Freetown</div>
+          </div>
+        </div>
+      </div>
+      <div class="test-card">
+        <div class="test-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+        <p class="test-text">"Booking online was so easy! I just filled in the form and they confirmed on WhatsApp within an hour. The pedicure was heavenly — I'll be back every month."</p>
+        <div class="test-author">
+          <div class="test-avatar"><i class="fa-solid fa-user"></i></div>
+          <div>
+            <div class="test-name">Isata Kamara</div>
+            <div class="test-loc"><i class="fa-solid fa-location-dot" style="font-size:.7rem;color:var(--rose);"></i> Aberdeen, Freetown</div>
+          </div>
+        </div>
+      </div>
+      <div class="test-card">
+        <div class="test-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i></div>
+        <p class="test-text">"Got the bridal package for my wedding and I cried happy tears when I saw my nails. The team was so professional and the studio is so clean and beautiful."</p>
+        <div class="test-author">
+          <div class="test-avatar"><i class="fa-solid fa-user"></i></div>
+          <div>
+            <div class="test-name">Mariama Conteh</div>
+            <div class="test-loc"><i class="fa-solid fa-location-dot" style="font-size:.7rem;color:var(--rose);"></i> Murray Town, Freetown</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ CONTACT MAP ══════════════════ -->
+<section id="contact">
+  <div class="container">
+    <div style="text-align:center;margin-bottom:50px;">
+      <span class="section-label">Get In Touch</span>
+      <h2 class="section-title">Visit Our Studio</h2>
+    </div>
+    <div class="contact-inner">
+      <div class="contact-map">
+        <i class="fa-solid fa-map-location-dot"></i>
+        <strong>12 Wilkinson Road, Aberdeen</strong>
+        <span>Freetown, Western Area, Sierra Leone</span>
+        <a href="https://maps.google.com" target="_blank" class="btn btn-outline" style="margin-top:8px;">
+          <i class="fa-solid fa-diamond-turn-right"></i> Get Directions
+        </a>
+      </div>
+      <div>
+        <h3 style="font-family:'Playfair Display',serif;font-size:1.5rem;color:var(--plum);margin-bottom:24px;">Stay Connected</h3>
+        <div class="info-item">
+          <div class="info-icon"><i class="fa-solid fa-location-dot"></i></div>
+          <div class="info-text">
+            <strong>Studio Address</strong>
+            <span>12 Wilkinson Road, Aberdeen, Freetown<br>Western Area, Sierra Leone</span>
+          </div>
+        </div>
+        <div class="info-item">
+          <div class="info-icon"><i class="fa-brands fa-whatsapp"></i></div>
+          <div class="info-text">
+            <strong>WhatsApp Bookings</strong>
+            <span>+232 78 123 456</span>
+          </div>
+        </div>
+        <div class="info-item">
+          <div class="info-icon"><i class="fa-solid fa-phone"></i></div>
+          <div class="info-text">
+            <strong>Main Line</strong>
+            <span>+232 76 987 654</span>
+          </div>
+        </div>
+        <div class="info-item">
+          <div class="info-icon"><i class="fa-solid fa-envelope"></i></div>
+          <div class="info-text">
+            <strong>Email</strong>
+            <span>hello@freetownnails.sl</span>
+          </div>
+        </div>
+        <div style="margin-top:28px;">
+          <h4 style="font-family:'Playfair Display',serif;color:var(--plum);margin-bottom:16px;">Follow Our Work</h4>
+          <div class="social-links">
+            <a href="#" class="soc-btn" title="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+            <a href="#" class="soc-btn" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
+            <a href="#" class="soc-btn" title="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+            <a href="#" class="soc-btn" title="TikTok"><i class="fa-brands fa-tiktok"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ FOOTER ══════════════════ -->
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <a href="#home" class="nav-logo">
+          <div class="logo-icon"><i class="fa-solid fa-hand-sparkles"></i></div>
+          Freetown Nails
+        </a>
+        <p>Sierra Leone's premier nail & beauty studio. Bringing luxury nail care to the heart of Freetown — now bookable online 24/7.</p>
+        <div class="social-links" style="margin-top:20px;">
+          <a href="#" class="soc-btn" style="background:rgba(255,255,255,.08);color:rgba(255,255,255,.6);" title="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+          <a href="#" class="soc-btn" style="background:rgba(255,255,255,.08);color:rgba(255,255,255,.6);" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
+          <a href="#" class="soc-btn" style="background:rgba(255,255,255,.08);color:rgba(255,255,255,.6);" title="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="#home">Home</a></li>
+          <li><a href="#services">Services</a></li>
+          <li><a href="#gallery">Gallery</a></li>
+          <li><a href="#book">Book Now</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Services</h4>
+        <ul>
+          <li><a href="#services">Classic Manicure</a></li>
+          <li><a href="#services">Gel Extensions</a></li>
+          <li><a href="#services">Nail Art</a></li>
+          <li><a href="#services">Acrylic Set</a></li>
+          <li><a href="#services">Bridal Package</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="tel:+23278123456">+232 78 123 456</a></li>
+          <li><a href="mailto:hello@freetownnails.sl">hello@freetownnails.sl</a></li>
+          <li><a href="#">12 Wilkinson Rd, Aberdeen</a></li>
+          <li><a href="#">Freetown, Sierra Leone</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2025 Freetown Nails & Beauty Studio. All rights reserved.</span>
+      <span>Designed with <i class="fa-solid fa-heart" style="color:var(--rose);"></i> for Sierra Leone &nbsp;·&nbsp; <a href="#">Privacy Policy</a></span>
+    </div>
+  </div>
+</footer>
+
+<!-- Scroll to top -->
+<button id="scroll-top" title="Back to top"><i class="fa-solid fa-chevron-up"></i></button>
+
+<!-- ══════════════════ JAVASCRIPT ══════════════════ -->
+<script>
+  // ── Navbar scroll effect
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 40);
+    document.getElementById('scroll-top').classList.toggle('visible', window.scrollY > 300);
+  });
+
+  // ── Mobile menu toggle
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobile-menu');
+  hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('open');
+    mobileMenu.classList.toggle('open');
+  });
+  document.querySelectorAll('.mob-link').forEach(link => {
+    link.addEventListener('click', () => {
+      hamburger.classList.remove('open');
+      mobileMenu.classList.remove('open');
+    });
+  });
+
+  // ── Smooth close on outside click
+  document.addEventListener('click', e => {
+    if (!navbar.contains(e.target) && !mobileMenu.contains(e.target)) {
+      hamburger.classList.remove('open');
+      mobileMenu.classList.remove('open');
+    }
+  });
+
+  // ── Scroll to top
+  document.getElementById('scroll-top').addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  // ── Set min date to today for booking form
+  const dateInput = document.getElementById('f-date');
+  if (dateInput) {
+    const today = new Date().toISOString().split('T')[0];
+    dateInput.setAttribute('min', today);
+  }
+
+  // ── Price Calculator
+  function updateCalc() {
+    const base = parseFloat(document.getElementById('base-service').value) || 0;
+    const addons = Array.from(document.querySelectorAll('.addon:checked'))
+                        .reduce((sum, cb) => sum + parseFloat(cb.value), 0);
+    document.getElementById('calc-total').textContent = `NLe ${base + addons}`;
+  }
+  document.getElementById('base-service').addEventListener('change', updateCalc);
+  document.querySelectorAll('.addon').forEach(cb => cb.addEventListener('change', updateCalc));
+
+  // ── Booking Form Validation
+  function showError(id, msgId, show) {
+    const field = document.getElementById(id);
+    const msg   = document.getElementById(msgId);
+    field.classList.toggle('error', show);
+    msg.classList.toggle('show', show);
+    return !show;
+  }
+
+  document.getElementById('booking-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    let valid = true;
+
+    const name  = document.getElementById('f-name').value.trim();
+    const phone = document.getElementById('f-phone').value.trim();
+    const email = document.getElementById('f-email').value.trim();
+    const svc   = document.getElementById('f-service').value;
+    const date  = document.getElementById('f-date').value;
+    const time  = document.getElementById('f-time').value;
+
+    if (!name || name.length < 2)        { showError('f-name',  'err-name',  true);  valid = false; } else showError('f-name',  'err-name',  false);
+    const phoneRegex = /^(\+232|0)(7[56789]|3[0-9])\s?\d{3}\s?\d{3}$/;
+    if (!phone)                          { showError('f-phone', 'err-phone', true);  valid = false; } else showError('f-phone', 'err-phone', false);
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email))         { showError('f-email', 'err-email', true);  valid = false; } else showError('f-email', 'err-email', false);
+    if (!svc)                            { showError('f-service','err-service',true);  valid = false; } else showError('f-service','err-service',false);
+    if (!date)                           { showError('f-date',  'err-date',  true);  valid = false; } else showError('f-date',  'err-date',  false);
+    if (!time)                           { showError('f-time',  'err-time',  true);  valid = false; } else showError('f-time',  'err-time',  false);
+
+    if (valid) {
+      const banner = document.getElementById('success-banner');
+      banner.classList.add('show');
+      this.reset();
+      banner.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      setTimeout(() => banner.classList.remove('show'), 8000);
+    } else {
+      const firstErr = document.querySelector('.form-control.error');
+      if (firstErr) firstErr.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  });
+
+  // ── Clear error on input
+  document.querySelectorAll('.form-control').forEach(el => {
+    el.addEventListener('input', () => {
+      el.classList.remove('error');
+      const errId = 'err-' + el.id.replace('f-', '');
+      const err = document.getElementById(errId);
+      if (err) err.classList.remove('show');
+    });
+  });
+
+  // ── Subtle entrance animations using Intersection Observer
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.opacity = '1';
+        entry.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.service-card, .test-card, .g-item').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(24px)';
+    el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+    observer.observe(el);
+  });
+</script>
+</body>
+</html>
