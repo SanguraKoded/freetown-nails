@@ -421,6 +421,27 @@
     .addon-item input[type=checkbox] {
       width: 18px; height: 18px; flex-shrink: 0;
       accent-color: var(--rose);
+      appearance: none;
+      -webkit-appearance: none;
+      background: rgba(255,255,255,0.15);
+      border: 2px solid rgba(255,255,255,0.5);
+      border-radius: 5px;
+      cursor: pointer;
+      position: relative;
+      transition: background .2s, border-color .2s;
+    }
+    .addon-item input[type=checkbox]:checked {
+      background: var(--rose);
+      border-color: var(--rose);
+    }
+    .addon-item input[type=checkbox]:checked::after {
+      content: '';
+      position: absolute;
+      left: 3px; top: 0px;
+      width: 6px; height: 10px;
+      border: 2px solid white;
+      border-top: none; border-left: none;
+      transform: rotate(45deg);
     }
     .addon-item label { color: rgba(255,255,255,.85); font-size: .88rem; cursor: pointer; flex: 1; }
     .addon-price { color: var(--rose); font-weight: 700; font-size: .88rem; }
@@ -748,7 +769,7 @@
           <div class="badge"><i class="fa-solid fa-gem"></i> Gel & Acrylic</div>
         </div>
         <div class="hero-img">
-          <img src="https://images.unsplash.com/photo-1632345031435-8727f592d8db?w=400&q=80" alt="Nail salon interior" />
+          <img src="https://images.unsplash.com/photo-1519751138087-5bf79df62d5b?w=400&q=80" alt="Nail salon interior" />
         </div>
       </div>
     </div>
@@ -805,7 +826,7 @@
         </div>
       </div>
       <div class="service-card">
-        <div class="service-icon"><i class="fa-solid fa-foot"></i></div>
+        <div class="service-icon"><i class="fa-solid fa-spa"></i></div>
         <div class="service-name">Luxury Pedicure</div>
         <p class="service-desc">Foot soak, exfoliation, massage, and colour. A full pampering experience for tired feet.</p>
         <div class="service-price">
@@ -850,15 +871,15 @@
         <div class="g-overlay"><span>Chrome Mirror</span></div>
       </div>
       <div class="g-item">
-        <img src="https://images.unsplash.com/photo-1632345031435-8727f592d8db?w=500&q=80" alt="Gel extensions" />
+        <img src="https://images.unsplash.com/photo-1519751138087-5bf79df62d5b?w=500&q=80" alt="Gel extensions" />
         <div class="g-overlay"><span>Gel Extensions</span></div>
       </div>
       <div class="g-item">
-        <img src="https://images.unsplash.com/photo-1604654894610-df63bc536371?w=500&q=80&crop=entropy&cs=tinysrgb" alt="Nail gems" />
+        <img src="https://images.unsplash.com/photo-1604654894610-df63bc536371?w=500&q=80&fit=crop&h=400&crop=bottom" alt="Nail gems" />
         <div class="g-overlay"><span>Gem Accents</span></div>
       </div>
       <div class="g-item">
-        <img src="https://images.unsplash.com/photo-1610992015732-2449b76344bc?w=500&q=80&sat=-50" alt="French manicure" />
+        <img src="https://images.unsplash.com/photo-1604654894610-df63bc536371?w=500&q=80&fit=crop&h=400&crop=top" alt="French manicure" />
         <div class="g-overlay"><span>Modern French</span></div>
       </div>
     </div>
